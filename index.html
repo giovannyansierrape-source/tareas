@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mis tareas</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#e7f5f1;--bg2:#e6efff;--surface:#fff;--soft:#f1f8f6;--ink:#17383d;--muted:#55737a;--line:#d5e6e2;--accent:#0b8576;--accent-ink:#fff;--ok:#12a672;--p0:#ff6b57;--p1:#f5a30b;--p2:#3b9cff;--sh:rgba(23,80,80,.1);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10252a;--bg2:#0d1b2a;--surface:#1a343a;--soft:#142a30;--ink:#eaf7f4;--muted:#93b4b2;--line:#2a4a50;--accent:#3fd2bd;--accent-ink:#07302b;--ok:#4fd69c;--p0:#ff8a78;--p1:#ffc14d;--p2:#6fb4ff;--sh:rgba(0,0,0,.3)}}
+:root[data-theme="dark"]{--bg:#10252a;--bg2:#0d1b2a;--surface:#1a343a;--soft:#142a30;--ink:#eaf7f4;--muted:#93b4b2;--line:#2a4a50;--accent:#3fd2bd;--accent-ink:#07302b;--ok:#4fd69c;--p0:#ff8a78;--p1:#ffc14d;--p2:#6fb4ff;--sh:rgba(0,0,0,.3)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:linear-gradient(160deg,var(--bg),var(--bg2)) fixed;color:var(--ink);font-family:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:17px;line-height:1.4}
+main{max-width:580px;margin:0 auto;padding:30px 18px 80px}
+h1{font-family:"Fredoka",system-ui,sans-serif;font-size:38px;font-weight:700;margin:0;line-height:1.1;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:4px 0 22px;font-size:16px;font-weight:600}
+.tabs{display:flex;gap:4px;background:var(--surface);padding:5px;border-radius:99px;margin-bottom:16px;box-shadow:0 4px 16px var(--sh)}
+.tabs button{flex:1;border:0;background:transparent;color:var(--muted);font-family:inherit;font-weight:700;font-size:15px;padding:10px 6px;border-radius:99px;cursor:pointer;transition:background .2s,color .2s}
+.tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+.tabs .n{display:inline-block;min-width:22px;margin-left:6px;padding:0 6px;border-radius:99px;background:rgba(127,150,150,.22);font-size:13px;line-height:22px}
+.prog{display:flex;align-items:center;gap:16px;background:var(--surface);border-radius:26px;padding:16px 20px;margin-bottom:16px;box-shadow:0 4px 16px var(--sh)}
+.ring{position:relative;flex:none;width:84px;height:84px}
+.ring svg{width:84px;height:84px;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:9;stroke-linecap:round}
+.ring .bg{stroke:var(--line)}
+.ring .fg{stroke:var(--ok);stroke-dasharray:213.6;stroke-dashoffset:213.6;transition:stroke-dashoffset .6s}
+.ring b{position:absolute;inset:0;display:grid;place-content:center;font-size:30px;font-weight:400}
+.prog h2{margin:0;font-family:"Fredoka",system-ui,sans-serif;font-size:21px;font-weight:600;line-height:1.2}
+.prog p{margin:4px 0 0;font-size:15px;color:var(--muted)}
+form{background:var(--surface);border-radius:26px;padding:14px;margin-bottom:20px;box-shadow:0 4px 16px var(--sh);display:grid;gap:12px}
+.row{display:flex;gap:8px}
+input[type=text]{flex:1;min-width:0;font:inherit;color:var(--ink);background:var(--soft);border:2px solid transparent;padding:12px 16px;border-radius:99px}
+input[type=text]:focus{outline:0;border-color:var(--accent)}
+input[type=text]::placeholder{color:var(--muted)}
+.add{font-family:inherit;font-weight:700;font-size:16px;border:0;border-radius:99px;padding:0 22px;background:var(--accent);color:var(--accent-ink);cursor:pointer}
+.add:active{transform:scale(.96)}
+.pri{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:14px;color:var(--muted);font-weight:600;padding:0 4px}
+.pri button{display:inline-flex;align-items:center;gap:7px;border:2px solid var(--line);background:transparent;color:var(--ink);font-family:inherit;font-weight:700;font-size:14px;padding:6px 13px;border-radius:99px;cursor:pointer}
+.pri button i,.pp i{width:10px;height:10px;border-radius:50%}
+.pri .b0 i{background:var(--p0)}.pri .b1 i{background:var(--p1)}.pri .b2 i{background:var(--p2)}
+.pri button[aria-pressed="true"]{background:var(--soft)}
+.pri .b0[aria-pressed="true"]{border-color:var(--p0)}.pri .b1[aria-pressed="true"]{border-color:var(--p1)}.pri .b2[aria-pressed="true"]{border-color:var(--p2)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+li{display:flex;align-items:center;gap:8px;background:var(--surface);border-radius:22px;padding:12px 8px 12px 16px;box-shadow:0 3px 12px var(--sh);transition:opacity .35s,transform .35s,max-height .35s,padding .35s,margin .35s;max-height:220px;overflow:hidden;flex-wrap:wrap}
+li.p0{--pc:var(--p0)}li.p1{--pc:var(--p1)}li.p2{--pc:var(--p2)}li.h{--pc:var(--line)}
+li.done{opacity:0;transform:translateX(30px);max-height:0;padding-top:0;padding-bottom:0;margin-top:-10px}
+li label{display:flex;align-items:center;gap:14px;flex:1 1 150px;min-width:0;cursor:pointer}
+li input[type=checkbox]{appearance:none;-webkit-appearance:none;flex:none;width:28px;height:28px;margin:0;border:3px solid var(--pc);border-radius:50%;display:grid;place-content:center;cursor:pointer;transition:background .2s,transform .15s}
+li input[type=checkbox]:active{transform:scale(.88)}
+li input[type=checkbox]::after{content:"";width:12px;height:7px;border:solid #fff;border-width:0 0 3px 3px;transform:rotate(-45deg) scale(0);margin-top:-3px;transition:transform .15s}
+li input[type=checkbox]:checked{background:var(--ok);border-color:var(--ok)}
+li input[type=checkbox]:checked::after{transform:rotate(-45deg) scale(1)}
+.tx{display:grid;min-width:0}.t{overflow-wrap:anywhere;font-weight:600}
+.age{font-size:13px;color:var(--muted);font-weight:600}
+.h .t{text-decoration:line-through;color:var(--muted)}
+.pp{flex:none;display:inline-flex;align-items:center;gap:6px;border:0;background:color-mix(in srgb,var(--pc) 16%,transparent);color:var(--ink);font-family:inherit;font-weight:700;font-size:12.5px;padding:6px 11px;border-radius:99px;cursor:pointer}
+.pp i{background:var(--pc)}
+.x{border:0;background:transparent;border-radius:50%;cursor:pointer;color:var(--muted);font-size:22px;line-height:1;width:36px;height:36px}.x:hover{color:var(--ink);background:var(--soft)}
+.empty{text-align:center;color:var(--muted);padding:34px 16px;border:2px dashed var(--line);border-radius:26px;font-weight:600}
+.empty b{display:block;font-size:42px;font-weight:400;margin-bottom:6px}
+.foot{display:flex;justify-content:center;margin-top:20px}
+.foot button{border:0;background:var(--surface);color:var(--muted);font-family:inherit;font-weight:700;font-size:14px;padding:9px 16px;border-radius:99px;cursor:pointer;box-shadow:0 2px 8px var(--sh)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,140px);background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:99px;display:flex;gap:14px;align-items:center;transition:transform .25s;font-size:15px;font-weight:700;white-space:nowrap}
+.toast.on{transform:translate(-50%,0)}
+.toast button{border:0;background:none;color:inherit;font-family:inherit;font-weight:700;font-size:15px;text-decoration:underline;cursor:pointer}
+.when{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:0 4px;font-size:14px;color:var(--muted);font-weight:600}
+.when[hidden]{display:none}
+.days button{border:2px solid var(--line);background:transparent;color:var(--ink);font-family:inherit;font-weight:700;font-size:14px;padding:6px 11px;border-radius:99px;cursor:pointer}
+.days button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.when input[type=date]{font:inherit;font-weight:700;font-size:15px;color:var(--ink);background:var(--soft);border:2px solid var(--line);border-radius:99px;padding:7px 14px;min-height:40px}
+.when input[type=date]:focus{outline:0;border-color:var(--accent)}
+h3.grp{font-family:"Fredoka",system-ui,sans-serif;font-size:17px;font-weight:600;margin:18px 4px 8px;color:var(--ink);display:flex;align-items:center;gap:8px}
+h3.grp:first-child{margin-top:0}
+h3.grp .hoy{font-family:"Nunito",system-ui,sans-serif;font-size:12px;font-weight:700;background:var(--accent);color:var(--accent-ink);padding:2px 9px;border-radius:99px}
+h3.grp.sin{color:var(--muted)}
+.dp{position:relative;flex:none;display:inline-flex;align-items:center;border:0;background:var(--soft);color:var(--ink);font-family:inherit;font-weight:700;font-size:12.5px;padding:6px 11px;border-radius:99px;cursor:pointer;overflow:hidden}
+.dp input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.rp{flex:none;border:0;background:color-mix(in srgb,var(--accent) 18%,transparent);color:var(--ink);font-family:inherit;font-weight:700;font-size:12.5px;padding:6px 11px;border-radius:99px;cursor:pointer}
+.rp.none{background:var(--soft);color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+  <h1 id="saludo">Hola</h1>
+  <p class="sub" id="fecha"></p>
+  <p class="age" id="estado" style="margin:-16px 4px 16px"></p>
+  <div class="tabs" role="tablist">
+    <button role="tab" data-tab="hoy" aria-selected="true">Hoy<span class="n" id="n-hoy">0</span></button>
+    <button role="tab" data-tab="semana" aria-selected="false">Semana<span class="n" id="n-semana">0</span></button>
+    <button role="tab" data-tab="mes" aria-selected="false">Mes<span class="n" id="n-mes">0</span></button>
+    <button role="tab" data-tab="hechas" aria-selected="false">Hechas<span class="n" id="n-hechas">0</span></button>
+  </div>
+  <div class="prog" id="prog">
+    <div class="ring"><svg viewBox="0 0 84 84" aria-hidden="true"><circle class="bg" cx="42" cy="42" r="34"/><circle class="fg" id="barra" cx="42" cy="42" r="34"/></svg><b id="cara">☀️</b></div>
+    <div><h2 id="progt"></h2><p id="progm"></p></div>
+  </div>
+  <form id="f">
+    <div class="row">
+      <input type="text" id="in" placeholder="¿Qué quieres hacer hoy?" maxlength="200" autocomplete="off" aria-label="Nueva tarea">
+      <button class="add" type="submit">Agregar</button>
+    </div>
+    <div class="pri" id="pri"><span>Prioridad</span>
+      <button type="button" class="b0" data-p="0" aria-pressed="false"><i></i>Alta</button>
+      <button type="button" class="b1" data-p="1" aria-pressed="true"><i></i>Media</button>
+      <button type="button" class="b2" data-p="2" aria-pressed="false"><i></i>Baja</button>
+    </div>
+    <div class="when days" id="rs"><span>Responsable</span>
+      <button type="button" data-r="GIOVANNY" aria-pressed="false">GIOVANNY</button>
+      <button type="button" data-r="JERSON" aria-pressed="false">JERSON</button>
+      <button type="button" data-r="FANNY" aria-pressed="false">FANNY</button>
+      <button type="button" data-r="XIMENA" aria-pressed="false">XIMENA</button>
+    </div>
+    <div class="when days" id="wk" hidden><span>Día de la semana</span>
+      <button type="button" data-w="0" aria-pressed="false">Lunes</button>
+      <button type="button" data-w="1" aria-pressed="false">Martes</button>
+      <button type="button" data-w="2" aria-pressed="false">Miércoles</button>
+      <button type="button" data-w="3" aria-pressed="false">Jueves</button>
+      <button type="button" data-w="4" aria-pressed="false">Viernes</button>
+      <button type="button" data-w="5" aria-pressed="false">Sábado</button>
+      <button type="button" data-w="6" aria-pressed="false">Domingo</button>
+    </div>
+    <div class="when" id="mn" hidden><label for="dia">Día del mes</label><input type="date" id="dia"></div>
+  </form>
+  <div class="when days" id="fl" style="margin:0 0 14px"><span>Ver</span>
+    <button type="button" data-fr="" aria-pressed="true">Todos</button>
+    <button type="button" data-fr="GIOVANNY" aria-pressed="false">GIOVANNY</button>
+    <button type="button" data-fr="JERSON" aria-pressed="false">JERSON</button>
+    <button type="button" data-fr="FANNY" aria-pressed="false">FANNY</button>
+    <button type="button" data-fr="XIMENA" aria-pressed="false">XIMENA</button>
+  </div>
+  <div id="lista"></div>
+  <div class="foot"><button id="mover" type="button"></button><button id="limpiar" type="button">Borrar historial</button></div>
+</main>
+<div class="toast" id="toast" role="status"><span id="tmsg"></span><button id="undo" type="button">Deshacer</button></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="config.js"></script>
+<script>
+(function(){
+  var KEY="tareas-v2", state={items:[],updated:0}, tab="hoy", newP=1, newW=null, newD="", newR=null, fil="", last=null, tt, docRef=null, saveT;
+  var $=function(i){return document.getElementById(i)};
+  var PN=["Alta","Media","Baja"];
+  var RS=["GIOVANNY","JERSON","FANNY","XIMENA"];
+  var WD=["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
+  function wdToday(){return (new Date().getDay()+6)%7}
+  function fmtDay(f){var s=new Date(f+"T00:00:00").toLocaleDateString("es",{weekday:"long",day:"numeric",month:"long"});return s.charAt(0).toUpperCase()+s.slice(1)}
+  function fmtShort(f){return new Date(f+"T00:00:00").toLocaleDateString("es",{day:"numeric",month:"short"})}
+  var CHEERS=["¡Bien hecho!","¡Una menos!","¡Excelente!","¡Así se hace!"];
+  function iso(d){return d.toLocaleDateString("sv")}
+  function today(){return iso(new Date())}
+  function ago(c){var a=new Date(c+"T00:00:00"),b=new Date(today()+"T00:00:00");return Math.round((b-a)/864e5)}
+  function loadLocal(){
+    try{var s=localStorage.getItem(KEY);if(s){var o=JSON.parse(s);if(o&&o.items)return o;}
+      var old=localStorage.getItem("tareas-v1");
+      if(old){var q=JSON.parse(old),it=[];["hoy","semana"].forEach(function(k){(q[k]||[]).forEach(function(t){it.push({id:String(t.id),t:t.t,p:1,s:k,c:today(),d:null})})});return {items:it,updated:Date.now()};}
+    }catch(e){}
+    return null;
+  }
+  var syncPush=null;
+  function save(){
+    state.updated=Date.now();
+    try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}
+    if(syncPush)syncPush();
+    else try{localStorage.setItem("tareas-pend","1")}catch(e){}
+  }
+  var l=loadLocal();if(l)state=l;
+  var f=new Date().toLocaleDateString("es",{weekday:"long",day:"numeric",month:"long"});
+  $("fecha").textContent=f.charAt(0).toUpperCase()+f.slice(1);
+  var hr=new Date().getHours();
+  $("saludo").textContent=(hr<12?"Buenos días":hr<19?"Buenas tardes":"Buenas noches")+" 👋";
+
+  function pending(s){return state.items.filter(function(t){return !t.d&&t.s===s}).sort(function(a,b){
+    if(s==="semana"){var wa=a.w==null?9:a.w,wb=b.w==null?9:b.w;if(wa!==wb)return wa-wb}
+    if(s==="mes"){var fa=a.f||"9999",fb=b.f||"9999";if(fa!==fb)return fa<fb?-1:1}
+    return a.p-b.p||(a.c<b.c?-1:1)})}
+  function doneList(){return state.items.filter(function(t){return t.d}).sort(function(a,b){return a.d<b.d?1:-1})}
+  function ageText(c){var n=ago(c);return n<=0?"":n===1?"Desde ayer":"Hace "+n+" días"}
+  function fmt(d){var s=new Date(d).toLocaleDateString("es",{weekday:"short",day:"numeric",month:"short"});return s.charAt(0).toUpperCase()+s.slice(1)}
+
+  function render(){
+    var box=$("lista"); box.innerHTML="";
+    var items=tab==="hechas"?doneList():pending(tab);
+    if(fil)items=items.filter(function(t){return t.r===fil});
+    if(!items.length){
+      var d=document.createElement("div");d.className="empty";
+      var em=document.createElement("b");em.textContent=tab==="hechas"?"🌱":tab==="hoy"?"🌤️":tab==="mes"?"📅":"🗓️";
+      var tx0=document.createElement("span");
+      tx0.textContent=tab==="hechas"?"Aquí aparecerán las tareas que termines.":tab==="hoy"?"Tu día está libre. Escribe tu primera tarea arriba.":tab==="mes"?"No tienes nada para este mes. Elige un día y escribe una tarea arriba.":"No tienes nada para esta semana. Escribe una tarea arriba.";
+      d.appendChild(em);d.appendChild(tx0);box.appendChild(d);
+    } else {
+      var ul=document.createElement("ul"), lastKey=null;
+      items.forEach(function(t){
+        if(tab==="semana"||tab==="mes"){
+          var key=tab==="semana"?(t.w==null?"x":t.w):(t.f||"x");
+          if(key!==lastKey){
+            lastKey=key;
+            if(ul.children.length){box.appendChild(ul);ul=document.createElement("ul")}
+            var g=document.createElement("h3");g.className="grp"+(key==="x"?" sin":"");
+            g.textContent=key==="x"?(tab==="semana"?"Sin día":"Sin fecha"):(tab==="semana"?WD[key]:fmtDay(key));
+            var isNow=tab==="semana"?key===wdToday():key===today();
+            if(isNow){var tg=document.createElement("span");tg.className="hoy";tg.textContent="Hoy";g.appendChild(tg)}
+            box.appendChild(g);
+          }
+        }
+        var li=document.createElement("li");li.className=tab==="hechas"?"h":"p"+t.p;
+        var lb=document.createElement("label");
+        var cb=document.createElement("input");cb.type="checkbox";
+        var tx=document.createElement("span");tx.className="tx";
+        var sp=document.createElement("span");sp.className="t";sp.textContent=t.t;tx.appendChild(sp);
+        var ag=document.createElement("span");ag.className="age";
+        if(tab==="hechas"){cb.checked=true;cb.setAttribute("aria-label","Restaurar: "+t.t);cb.addEventListener("change",function(){restore(t.id)});ag.textContent="Terminada el "+fmt(t.d)+(t.r?" · "+t.r:"");}
+        else{cb.setAttribute("aria-label","Marcar como hecha: "+t.t);cb.addEventListener("change",function(){li.classList.add("done");setTimeout(function(){finish(t.id)},350)});if(tab==="hoy")ag.textContent=ageText(t.c);}
+        if(ag.textContent)tx.appendChild(ag);
+        lb.appendChild(cb);lb.appendChild(tx);li.appendChild(lb);
+        if(tab!=="hechas"){
+          var rb=document.createElement("button");rb.type="button";rb.className="rp"+(t.r?"":" none");
+          rb.textContent=t.r||"Asignar";
+          rb.setAttribute("aria-label","Responsable: "+(t.r||"ninguno")+". Tocar para cambiar");
+          rb.addEventListener("click",function(){var i=t.r?RS.indexOf(t.r):-1;t.r=i>=RS.length-1?null:RS[i+1];save();render()});
+          li.appendChild(rb);
+        }
+        if(tab==="semana"){
+          var wb=document.createElement("button");wb.type="button";wb.className="dp";
+          wb.textContent=t.w==null?"Poner día":WD[t.w].slice(0,3);
+          wb.setAttribute("aria-label","Día de la semana: "+(t.w==null?"sin día":WD[t.w])+". Tocar para cambiar");
+          wb.addEventListener("click",function(){t.w=t.w==null?0:t.w===6?null:t.w+1;save();render()});li.appendChild(wb);
+        }
+        if(tab==="mes"){
+          var dl=document.createElement("label");dl.className="dp";
+          dl.appendChild(document.createTextNode(t.f?fmtShort(t.f):"Poner fecha"));
+          var di=document.createElement("input");di.type="date";di.value=t.f||"";di.setAttribute("aria-label","Cambiar fecha de: "+t.t);
+          di.addEventListener("click",function(){try{di.showPicker()}catch(e){}});
+          di.addEventListener("change",function(){t.f=di.value||null;save();render()});
+          dl.appendChild(di);li.appendChild(dl);
+        }
+        if(tab!=="hechas"){
+          var pb=document.createElement("button");pb.type="button";pb.className="pp";pb.setAttribute("aria-label","Prioridad "+PN[t.p].toLowerCase()+". Tocar para cambiar");
+          var dot=document.createElement("i");pb.appendChild(dot);pb.appendChild(document.createTextNode(PN[t.p]));
+          pb.addEventListener("click",function(){t.p=(t.p+1)%3;save();render()});li.appendChild(pb);
+        }
+        var x=document.createElement("button");x.className="x";x.type="button";x.textContent="×";x.setAttribute("aria-label","Borrar tarea");
+        x.addEventListener("click",function(){removeItem(t.id)});
+        li.appendChild(x);ul.appendChild(li);
+      });
+      box.appendChild(ul);
+    }
+    var ph=pending("hoy").length, ps=pending("semana").length, hd=doneList().length;
+    $("n-hoy").textContent=ph;$("n-semana").textContent=ps;$("n-mes").textContent=pending("mes").length;$("n-hechas").textContent=hd;
+    var dt=state.items.filter(function(t){return t.d&&t.d.slice(0,10)===today()}).length, tot=dt+ph;
+    $("prog").style.display=tab==="hoy"?"":"none";
+    var pct=tot?dt/tot:0;
+    $("barra").style.strokeDashoffset=213.6*(1-pct);
+    $("cara").textContent=tot===0?"☀️":dt===tot?"🎉":pct>=.5?"💪":dt>0?"🙂":"📝";
+    $("progt").textContent=tot===0?"Día tranquilo":dt===tot?"¡Todo listo por hoy!":dt+" de "+tot+" terminadas";
+    $("progm").textContent=tot===0?"Agrega algo pequeño para empezar.":dt===tot?"Te lo ganaste, disfruta tu tiempo libre.":dt===0?"Elige una y empieza por ahí.":pct>=.5?"Ya pasaste la mitad, ¡sigue así!":"Buen comienzo, una más.";
+    document.querySelector("form").style.display=tab==="hechas"?"none":"";
+    $("in").placeholder=tab==="semana"?"¿Qué quieres hacer esta semana?":tab==="mes"?"¿Qué quieres hacer este mes?":"¿Qué quieres hacer hoy?";
+    $("wk").hidden=tab!=="semana";$("mn").hidden=tab!=="mes";
+    [].forEach.call($("rs").querySelectorAll("button"),function(b){b.setAttribute("aria-pressed",String(b.dataset.r===newR))});
+    [].forEach.call($("fl").querySelectorAll("button"),function(b){b.setAttribute("aria-pressed",String(b.dataset.fr===fil))});
+    [].forEach.call($("wk").querySelectorAll("button"),function(b){b.setAttribute("aria-pressed",String(newW!==null&&+b.dataset.w===newW))});
+    if(!$("dia").value)$("dia").value=newD||today();
+    var m=$("mover");
+    if(tab==="hechas"){m.style.display="none";$("limpiar").style.display=hd?"":"none";}
+    else if(tab==="mes"){$("limpiar").style.display="none";m.style.display="none";}
+    else{$("limpiar").style.display="none";m.style.display=(tab==="hoy"?ph:ps)?"":"none";m.textContent=tab==="hoy"?"Pasar todo a la semana":"Pasar todo a hoy";}
+  }
+  function find(id){return state.items.findIndex(function(t){return t.id===id})}
+  function finish(id){var i=find(id);if(i<0)return;last={id:id,type:"finish"};state.items[i].d=new Date().toISOString();save();render();toast(CHEERS[Math.floor(Math.random()*CHEERS.length)])}
+  function restore(id){var i=find(id);if(i<0)return;state.items[i].d=null;state.items[i].c=today();save();render()}
+  function removeItem(id){var i=find(id);if(i<0)return;last={type:"del",item:state.items[i],i:i};state.items.splice(i,1);save();render();toast("Tarea borrada")}
+  function toast(msg){$("tmsg").textContent=msg;$("toast").classList.add("on");clearTimeout(tt);tt=setTimeout(function(){$("toast").classList.remove("on");last=null},5000)}
+  $("undo").addEventListener("click",function(){
+    if(!last)return;
+    if(last.type==="finish"){var i=find(last.id);if(i>=0)state.items[i].d=null}
+    else state.items.splice(last.i,0,last.item);
+    last=null;save();render();$("toast").classList.remove("on");
+  });
+  $("f").addEventListener("submit",function(e){
+    e.preventDefault();var v=$("in").value.trim();if(!v)return;
+    state.items.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:v,p:newP,s:tab,c:today(),d:null,r:newR,w:tab==="semana"?newW:null,f:tab==="mes"?($("dia").value||today()):null});
+    $("in").value="";save();render();$("in").focus();
+  });
+  $("rs").addEventListener("click",function(e){var b=e.target.closest("button[data-r]");if(!b)return;newR=newR===b.dataset.r?null:b.dataset.r;render()});
+  $("fl").addEventListener("click",function(e){var b=e.target.closest("button[data-fr]");if(!b)return;fil=b.dataset.fr;render()});
+  $("wk").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-w]");if(!b)return;var w=+b.dataset.w;newW=newW===w?null:w;render();
+  });
+  $("dia").addEventListener("change",function(){newD=$("dia").value});
+  $("pri").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-p]");if(!b)return;newP=+b.dataset.p;
+    [].forEach.call($("pri").querySelectorAll("button"),function(x){x.setAttribute("aria-pressed",x===b)});
+  });
+  document.querySelector(".tabs").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-tab]");if(!b)return;tab=b.dataset.tab;
+    [].forEach.call(document.querySelectorAll(".tabs button"),function(x){x.setAttribute("aria-selected",x===b)});render();
+  });
+  $("mover").addEventListener("click",function(){
+    var to=tab==="hoy"?"semana":"hoy";
+    state.items.forEach(function(t){if(!t.d&&t.s===tab)t.s=to});save();render();
+  });
+  $("limpiar").addEventListener("click",function(){
+    if(!confirm("¿Borrar todo el historial de tareas terminadas?"))return;
+    state.items=state.items.filter(function(t){return !t.d});save();render();
+  });
+  render();
+
+  // Sincronización con Firebase: cada tarea se guarda por separado,
+  // así dos personas pueden agregar tareas a la vez sin pisarse.
+  function estado(t,ok){var e=$("estado");e.textContent=t;e.style.color=ok?"var(--ok)":"var(--muted)"}
+  (function(){
+    var cfg=window.FIREBASE_CONFIG;
+    if(!window.firebase||!cfg||!cfg.databaseURL||String(cfg.databaseURL).indexOf("PEGA")>=0){
+      estado("Modo local: falta configurar Firebase (mira LEEME.txt)",false);return;
+    }
+    try{
+      firebase.initializeApp(cfg);
+      var db=firebase.database(), ref=db.ref("tareas/lista"), sent={}, first=true;
+      function plain(t){var o={};Object.keys(t).forEach(function(k){if(t[k]!==undefined&&t[k]!==null)o[k]=t[k]});return o}
+      function sig(t){var o=plain(t);return JSON.stringify(Object.keys(o).sort().map(function(k){return [k,o[k]]}))}
+      function push(){
+        var cur={},up={},n=0;
+        state.items.forEach(function(t){cur[t.id]=t});
+        Object.keys(cur).forEach(function(id){var g=sig(cur[id]);if(sent[id]!==g){up[id]=plain(cur[id]);sent[id]=g;n++}});
+        Object.keys(sent).forEach(function(id){if(!cur[id]){up[id]=null;delete sent[id];n++}});
+        if(n)ref.update(up).catch(function(){estado("No se pudo guardar. Revisa las reglas de Firebase (LEEME.txt, paso 4)",false)});
+      }
+      ref.on("value",function(sn){
+        var v=sn.val()||{}, remote=[], ids={};
+        sent={};
+        Object.keys(v).forEach(function(k){var o=v[k];o.id=k;remote.push(o);ids[k]=1;sent[k]=sig(o)});
+        if(first){
+          first=false;
+          var pend=false;try{pend=localStorage.getItem("tareas-pend")==="1"}catch(e){}
+          if(pend||!remote.length){
+            // lo hecho sin conexión (o la primera vez, para llenar la base vacía) se suma, no se pierde
+            state.items.forEach(function(t){if(!ids[t.id])remote.push(t)});
+          }
+          try{localStorage.removeItem("tareas-pend")}catch(e){}
+        }
+        state.items=remote;
+        try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}
+        syncPush=push;
+        push();
+        render();
+      },function(){estado("Sin permiso para leer. Revisa las reglas de Firebase (LEEME.txt, paso 4)",false)});
+      db.ref(".info/connected").on("value",function(s){
+        if(s.val())estado("● Sincronizado con el equipo",true);
+        else estado("Sin conexión: se guardará al reconectar",false);
+      });
+    }catch(e){estado("Error en la configuración de Firebase (mira config.js)",false)}
+  })();
+})();
+</script>
+</body>
+</html>

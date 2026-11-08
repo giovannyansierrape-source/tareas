@@ -1,0 +1,57 @@
+MIS TAREAS COMPARTIDAS - cómo dejarlo funcionando (gratis, sin iniciar sesión)
+
+La carpeta tiene:
+  index.html  -> la página de tareas
+  config.js   -> aquí pegas los datos de Firebase
+  LEEME.txt   -> estas instrucciones
+
+PARTE A. Crear la base de datos gratuita en Firebase (una sola vez)
+1. Entra a https://console.firebase.google.com con una cuenta de Google.
+2. Clic en "Crear un proyecto", ponle un nombre (por ejemplo "mis-tareas") y sigue los pasos.
+   Puedes desactivar Google Analytics. Usa el plan gratuito (Spark).
+3. En el menú izquierdo: "Compilación" > "Realtime Database" > "Crear base de datos".
+   Elige la ubicación que prefieras y empieza en "modo de prueba".
+4. Ve a la pestaña "Reglas", borra lo que haya y pega esto, y pulsa "Publicar":
+
+   {
+     "rules": {
+       "tareas": { ".read": true, ".write": true }
+     }
+   }
+
+5. Ve a la rueda de engranaje (arriba a la izquierda) > "Configuración del proyecto".
+   Baja hasta "Tus apps", pulsa el icono "</>" (Web), ponle un nombre y registra la app.
+   Te mostrará un bloque "firebaseConfig" con apiKey, authDomain, databaseURL, projectId y appId.
+   Si no aparece databaseURL, cópiala de la pestaña "Datos" de Realtime Database
+   (es una dirección que empieza con https:// y termina en firebaseio.com).
+6. Abre config.js con el Bloc de notas y reemplaza cada "PEGA_AQUI" por esos valores.
+   Guarda el archivo.
+
+PARTE B. Usarlo en varios computadores
+Opción 1 (la más fácil): publicar la carpeta gratis
+  - Entra a https://app.netlify.com/drop y arrastra la carpeta completa.
+  - Te da un enlace. Compártelo y todos lo abren sin iniciar sesión.
+Opción 2: copiar la carpeta a cada computador y abrir index.html con el navegador.
+  Todos verán las mismas tareas porque se guardan en Firebase.
+
+CÓMO SABER QUE FUNCIONA
+Debajo de la fecha aparece "● Sincronizado con el equipo". Si dice "Modo local",
+falta completar config.js. Si dice "No se pudo conectar", revisa las reglas (paso 4).
+
+IMPORTANTE
+- No hay contraseña: cualquiera que tenga el enlace puede ver y cambiar las tareas.
+  No escribas información privada o confidencial.
+- Si usas el modo de prueba sin pegar las reglas del paso 4, Firebase bloquea
+  el acceso a los 30 días y la lista dejará de sincronizar.
+
+SI NO SE VE EN EL OTRO COMPUTADOR
+1. Los DOS computadores deben abrir la página con config.js ya completo.
+   Si en alguno dice "Modo local", ese computador no está conectado.
+2. databaseURL debe ir completo, tal como lo muestra Firebase en la pestaña "Datos",
+   por ejemplo: https://mi-proyecto-default-rtdb.firebaseio.com
+   (en otras regiones termina en .firebasedatabase.app). No lo cortes.
+3. Las reglas del paso 4 deben estar publicadas. Si dicen "Sin permiso" o "No se pudo guardar", es esto.
+4. Si abres index.html desde una carpeta, cada computador necesita su copia con el mismo config.js.
+   Si usas Netlify o GitHub, después de cambiar config.js hay que subir otra vez los archivos.
+5. Para ver si llega algo a Firebase: en la consola de Firebase, pestaña "Datos",
+   debe aparecer tareas > lista > (una entrada por cada tarea).
