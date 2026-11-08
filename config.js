@@ -1,9 +1,8 @@
-// Pega aquí los datos de tu proyecto de Firebase (ver LEEME.txt, paso 4).
-// Reemplaza cada "PEGA_AQUI" por el valor que te da Firebase, dejando las comillas.
+// Datos del proyecto de Firebase "tareas"
 window.FIREBASE_CONFIG = {
-  apiKey: "PEGA_AQUI",
-  authDomain: "PEGA_AQUI",
-  databaseURL: "PEGA_AQUI",
-  projectId: "PEGA_AQUI",
-  appId: "PEGA_AQUI"
+  apiKey: "AIzaSyCFfDlg03vskb8Tu67tFA4TLJ8wuJTkKAg",
+  authDomain: "tareas-f9ab2.firebaseapp.com",
+  databaseURL: "https://tareas-f9ab2-default-rtdb.firebaseio.com",
+  projectId: "tareas-f9ab2",
+  appId: "1:580476569480:web:14f65d39329387c09e5c3d"
 };
